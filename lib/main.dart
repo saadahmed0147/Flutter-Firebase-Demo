@@ -1,15 +1,19 @@
-import 'package:firebase_1/screens/home.dart';
+import 'package:firebase_1/Routes/route.dart';
+import 'package:firebase_1/Routes/route_name.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 void main() async {
-  runApp(const MyApp());
-
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    runApp(const MyApp());
+  } catch (e) {
+    debugPrint('Error initializing Firebase $e');
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -19,7 +23,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: HomeScreen(),
+      debugShowCheckedModeBanner: false,
+      initialRoute: RouteNames.splashScreen,
+      onGenerateRoute: Routes.generateRoute,
     );
   }
 }
