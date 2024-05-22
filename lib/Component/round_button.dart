@@ -5,12 +5,17 @@ class RoundButton extends StatefulWidget {
   final String title;
   final bool loading;
   final VoidCallback onPress;
-  const RoundButton({
-    super.key,
-    required this.title,
-    required this.onPress,
-    this.loading = false,
-  });
+  final Color backgroundColor;
+  final Color foregroundColor;
+  final FocusNode? focusNode;
+  const RoundButton(
+      {super.key,
+      required this.title,
+      required this.onPress,
+      this.loading = false,
+      this.backgroundColor = AppColors.blackColor,
+      this.foregroundColor = AppColors.whiteColor,
+      this.focusNode});
 
   @override
   State<RoundButton> createState() => _RoundButtonState();
@@ -27,12 +32,13 @@ class _RoundButtonState extends State<RoundButton> {
             color: AppColors.blackColor,
           )
         : ElevatedButton(
+            focusNode: widget.focusNode,
             onPressed: widget.onPress,
             style: ElevatedButton.styleFrom(
-                textStyle: const TextStyle(fontSize: 20),
+                textStyle: const TextStyle(fontSize: 15),
                 fixedSize: Size(width * .5, height * .06),
-                backgroundColor: AppColors.blackColor,
-                foregroundColor: AppColors.whiteColor),
+                backgroundColor: widget.backgroundColor,
+                foregroundColor: widget.foregroundColor),
             child: Text(widget.title),
           );
   }
