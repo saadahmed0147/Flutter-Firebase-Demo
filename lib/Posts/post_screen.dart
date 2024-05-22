@@ -1,5 +1,6 @@
 import 'package:firebase_1/Res/colors.dart';
 import 'package:firebase_1/Routes/route_name.dart';
+import 'package:firebase_1/Utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -23,8 +24,11 @@ class _PostScreenState extends State<PostScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                FirebaseAuth.instance.signOut();
-                Navigator.pushReplacementNamed(context, RouteNames.loginScreen);
+                FirebaseAuth.instance.signOut().then((value) =>
+                    Navigator.pushNamed(context, RouteNames.loginScreen)
+                      ..onError((error, stackTrace) =>
+                          Utils.flushBarErrorMessage(
+                              error.toString(), context)));
               },
               icon: const Icon(Icons.exit_to_app))
         ],
