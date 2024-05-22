@@ -127,6 +127,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: const Text('SignUp'),
                     )
                   ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: RoundButton(
+                    title: 'Login with Phone',
+                    backgroundColor: AppColors.whiteColor,
+                    foregroundColor: AppColors.blackColor,
+                    onPress: () {
+                      Navigator.pushNamed(
+                          context, RouteNames.phoneNumberInputScreen);
+                    },
+                  ),
                 )
               ],
             ),
