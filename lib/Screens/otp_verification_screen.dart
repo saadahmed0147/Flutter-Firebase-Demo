@@ -18,6 +18,8 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
   final otpController = TextEditingController();
   final _auth = FirebaseAuth.instance;
   bool _loading = false;
+  FocusNode textFieldFocus = FocusNode();
+  FocusNode otpButtonFocus = FocusNode();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,12 +43,18 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                       inputType: TextInputType.number,
                       textEditingController: otpController,
                       prefixIcon: Icons.lock,
+                      focusNode: textFieldFocus,
+                      onFieldSubmitted: (p0) {
+                        Utils.fieldFocusNode(
+                            context, textFieldFocus, otpButtonFocus);
+                      },
                     ),
                     Padding(
                         padding: const EdgeInsets.all(40.0),
                         child: RoundButton(
                             title: 'Verify',
-                            onPress: () {
+                            focusNode: otpButtonFocus,
+                            onPress: () async {
                               setState(() {
                                 _loading = true;
                               });
@@ -57,7 +65,7 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                                 setState(() {
                                   _loading = false;
                                 });
-                                _auth.signInWithCredential(credential);
+                                await _auth.signInWithCredential(credential);
                                 Navigator.pushNamed(
                                     context, RouteNames.postScreen);
                               } catch (e) {
