@@ -1,7 +1,6 @@
 import 'package:firebase_1/Component/round_button.dart';
 import 'package:firebase_1/Component/round_textfield.dart';
 import 'package:firebase_1/Res/colors.dart';
-import 'package:firebase_1/Routes/route_name.dart';
 import 'package:firebase_1/Screens/otp_verification_screen.dart';
 import 'package:firebase_1/Utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
