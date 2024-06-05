@@ -2,26 +2,28 @@ import 'package:flutter/material.dart';
 
 class RoundTextField extends StatefulWidget {
   final String label;
-  final String hint;
+  final String? hint;
   final TextInputType inputType;
   final FocusNode? focusNode;
-  final IconData prefixIcon;
+  final IconData? prefixIcon;
   final void Function(String)? onFieldSubmitted;
   final bool? isPasswordField;
   final TextEditingController textEditingController;
   final String? validatorValue;
+  final Function(String)? onChange;
 
   const RoundTextField(
       {super.key,
       required this.label,
-      required this.hint,
+      this.hint,
       required this.inputType,
-      required this.prefixIcon,
+      this.prefixIcon,
       required this.textEditingController,
       this.isPasswordField,
       this.onFieldSubmitted,
       this.focusNode,
-      this.validatorValue});
+      this.validatorValue,
+      this.onChange});
 
   @override
   State<RoundTextField> createState() => _RoundTextFieldState();
@@ -38,6 +40,7 @@ class _RoundTextFieldState extends State<RoundTextField> {
           valueListenable: passwordVisiblity,
           builder: (context, value, child) {
             return TextFormField(
+              onChanged: widget.onChange,
               validator: (value) {
                 if (value!.isEmpty) {
                   return widget.validatorValue;
