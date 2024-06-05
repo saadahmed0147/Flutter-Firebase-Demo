@@ -23,60 +23,60 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Verify'),
-          automaticallyImplyLeading: true,
-          centerTitle: true,
-          backgroundColor: AppColors.blackColor,
-          foregroundColor: AppColors.whiteColor,
-        ),
-        body: Center(
-          child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    RoundTextField(
-                      label: 'Enter the code sent to your phone',
-                      hint: '123456',
-                      inputType: TextInputType.number,
-                      textEditingController: otpController,
-                      prefixIcon: Icons.lock,
-                      focusNode: textFieldFocus,
-                      onFieldSubmitted: (p0) {
-                        Utils.fieldFocusNode(
-                            context, textFieldFocus, otpButtonFocus);
-                      },
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.all(40.0),
-                        child: RoundButton(
-                            title: 'Verify',
-                            focusNode: otpButtonFocus,
-                            onPress: () async {
+      appBar: AppBar(
+        title: const Text('Verify'),
+        automaticallyImplyLeading: true,
+        centerTitle: true,
+        backgroundColor: AppColors.blackColor,
+        foregroundColor: AppColors.whiteColor,
+      ),
+      body: Center(
+        child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  RoundTextField(
+                    label: 'Enter the code sent to your phone',
+                    hint: '123456',
+                    inputType: TextInputType.number,
+                    textEditingController: otpController,
+                    prefixIcon: Icons.lock,
+                    focusNode: textFieldFocus,
+                    onFieldSubmitted: (p0) {
+                      Utils.fieldFocusNode(
+                          context, textFieldFocus, otpButtonFocus);
+                    },
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.all(40.0),
+                      child: RoundButton(
+                          title: 'Verify',
+                          focusNode: otpButtonFocus,
+                          onPress: () async {
+                            setState(() {
+                              _loading = true;
+                            });
+                            final credential = PhoneAuthProvider.credential(
+                                verificationId: widget.verificationId,
+                                smsCode: otpController.text.toString());
+                            try {
                               setState(() {
-                                _loading = true;
+                                _loading = false;
                               });
-                              final credential = PhoneAuthProvider.credential(
-                                  verificationId: widget.verificationId,
-                                  smsCode: otpController.text.toString());
-                              try {
-                                setState(() {
-                                  _loading = false;
-                                });
-                                await _auth.signInWithCredential(credential);
-                                Navigator.pushNamed(
-                                    context, RouteNames.postScreen);
-                              } catch (e) {
-                                setState(() {
-                                  _loading = false;
-                                });
-                                Utils.flushBarErrorMessage(
-                                    e.toString(), context);
-                              }
-                            }))
-                  ])),
-        ));
+                              await _auth.signInWithCredential(credential);
+                              Navigator.pushNamed(
+                                  context, RouteNames.postScreen);
+                            } catch (e) {
+                              setState(() {
+                                _loading = false;
+                              });
+                              Utils.flushBarErrorMessage(e.toString(), context);
+                            }
+                          }))
+                ])),
+      ),
+    );
   }
 }
