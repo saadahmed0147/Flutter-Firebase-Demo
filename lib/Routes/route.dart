@@ -1,4 +1,5 @@
-import 'package:firebase_1/Posts/post_screen.dart';
+import 'package:firebase_1/Screens/Posts/add_post_screen.dart';
+import 'package:firebase_1/Screens/Posts/post_screen.dart';
 import 'package:firebase_1/Routes/route_name.dart';
 import 'package:firebase_1/Screens/login_screen.dart';
 import 'package:firebase_1/Screens/otp_verification_screen.dart';
@@ -36,6 +37,10 @@ class Routes {
           builder: (context) => OTPVerificationScreen(
             verificationId: arg['verificationId']!,
           ),
+        );
+      case RouteNames.addPostScreen:
+        return MaterialPageRoute(
+          builder: (context) => const AddPostScreen(),
         );
 
       default:

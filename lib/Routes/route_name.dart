@@ -5,4 +5,5 @@ class RouteNames {
   static const String postScreen = 'post_screen';
   static const String phoneNumberInputScreen = 'phone_number_input_screen';
   static const String otpVerificationScreen = 'otp_verification_screen';
+  static const String addPostScreen = 'add_post_screen';
 }
