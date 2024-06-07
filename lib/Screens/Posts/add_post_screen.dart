@@ -17,6 +17,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height * 1;
+    FocusNode textFieldFocus = FocusNode();
+    FocusNode buttonFocus = FocusNode();
+
     bool loading = false;
     return Scaffold(
       appBar: AppBar(
@@ -34,6 +37,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 height: height * .1,
               ),
               TextFormField(
+                onFieldSubmitted: (value) {
+                  Utils.fieldFocusNode(context, textFieldFocus, buttonFocus);
+                },
+                focusNode: textFieldFocus,
                 controller: textFieldController,
                 maxLines: 8,
                 decoration: InputDecoration(
@@ -59,6 +66,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   RoundButton(
+                      focusNode: buttonFocus,
                       loading: loading,
                       title: 'Add',
                       onPress: () {
