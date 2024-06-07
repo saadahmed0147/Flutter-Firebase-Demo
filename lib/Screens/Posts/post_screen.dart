@@ -28,6 +28,8 @@ class _PostScreenState extends State<PostScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height * 1;
+
     return PopScope(
       canPop: false,
       child: Scaffold(
@@ -50,12 +52,15 @@ class _PostScreenState extends State<PostScreen> {
           ],
         ),
         body: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(20),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: RoundTextField(
+                  hint: 'Search post',
                   prefixIcon: Icons.search,
                   label: 'Search',
                   inputType: TextInputType.text,
@@ -63,6 +68,17 @@ class _PostScreenState extends State<PostScreen> {
                   onChange: (p0) {
                     setState(() {});
                   },
+                ),
+              ),
+              SizedBox(
+                height: height * .03,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Text(
+                  'Posts',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: height * 0.025),
                 ),
               ),
               Expanded(
