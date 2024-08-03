@@ -12,11 +12,11 @@ class SplashServices {
     if (user != null) {
       debugPrint(user.toString());
       Timer(const Duration(seconds: 3), () {
-        Navigator.pushNamed(context, RouteNames.postScreen);
+        Navigator.pushReplacementNamed(context, RouteNames.postScreen);
       });
     } else {
       Timer(const Duration(seconds: 3), () {
-        Navigator.pushNamed(context, RouteNames.loginScreen);
+        Navigator.pushReplacementNamed(context, RouteNames.loginScreen);
       });
     }
   }
