@@ -1,3 +1,4 @@
+import 'package:firebase_1/Res/colors.dart';
 import 'package:flutter/material.dart';
 
 class RoundTextField extends StatefulWidget {
@@ -54,13 +55,13 @@ class _RoundTextFieldState extends State<RoundTextField> {
               obscureText:
                   widget.isPasswordField == true && passwordVisiblity.value,
               decoration: InputDecoration(
-                labelText: widget.label,
+                border: InputBorder.none,
+                filled: true,
+                fillColor: AppColors.lightGreenColor,
                 floatingLabelBehavior: FloatingLabelBehavior.always,
-                labelStyle: const TextStyle(color: Colors.black),
                 hintText: widget.hint,
-                hintStyle:
-                    const TextStyle(color: Color.fromARGB(255, 134, 133, 103)),
-                prefixIcon: Icon(widget.prefixIcon),
+                hintStyle: const TextStyle(color: Color(0xff8eaa8e)),
+                // prefixIcon: Icon(widget.prefixIcon),
                 suffixIcon: widget.isPasswordField == true
                     ? IconButton(
                         onPressed: () {
@@ -73,11 +74,16 @@ class _RoundTextFieldState extends State<RoundTextField> {
                         ),
                       )
                     : null,
+                   errorBorder:  const OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.all(Radius.circular(8))), 
                 focusedBorder: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(30))),
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.all(Radius.circular(8))),
                 enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide.none,
                   borderRadius: BorderRadius.all(
-                    Radius.circular(30),
+                    Radius.circular(8),
                   ),
                 ),
               ),

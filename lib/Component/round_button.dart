@@ -1,3 +1,4 @@
+import 'package:firebase_1/main.dart';
 import 'package:firebase_1/res/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ class RoundButton extends StatefulWidget {
       required this.title,
       required this.onPress,
       this.loading = false,
-      this.backgroundColor = AppColors.blackColor,
+      this.backgroundColor = AppColors.btnColor,
       this.foregroundColor = AppColors.whiteColor,
       this.focusNode});
 
@@ -24,22 +25,28 @@ class RoundButton extends StatefulWidget {
 class _RoundButtonState extends State<RoundButton> {
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width * 1;
-    final height = MediaQuery.of(context).size.height * 1;
-
     return widget.loading
         ? const CircularProgressIndicator(
-            color: AppColors.blackColor,
+            color: AppColors.whiteColor,
           )
-        : ElevatedButton(
-            focusNode: widget.focusNode,
-            onPressed: widget.onPress,
-            style: ElevatedButton.styleFrom(
+        : SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              focusNode: widget.focusNode,
+              onPressed: widget.onPress,
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 textStyle: const TextStyle(fontSize: 15),
-                fixedSize: Size(width * .5, height * .06),
                 backgroundColor: widget.backgroundColor,
-                foregroundColor: widget.foregroundColor),
-            child: Text(widget.title),
+                foregroundColor: widget.foregroundColor,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(13.0),
+                child: Text(widget.title,style: TextStyle(fontSize: mq.height*0.025,fontWeight: FontWeight.bold),),
+              ),
+            ),
           );
   }
 }
