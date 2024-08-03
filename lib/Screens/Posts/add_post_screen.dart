@@ -92,6 +92,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                             setState(() {
                               loading = false;
                             });
+                        
                             Utils.flushBarErrorMessage(
                                 error.toString(), context);
                           });

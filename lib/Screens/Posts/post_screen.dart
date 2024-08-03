@@ -26,6 +26,48 @@ class _PostScreenState extends State<PostScreen> {
     });
   }
 
+  void editPost(String postKey, String currentText) {
+    final TextEditingController _textController =
+        TextEditingController(text: currentText);
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Edit Post'),
+          content: TextFormField(
+            controller: _textController,
+            decoration: const InputDecoration(hintText: 'Update post'),
+            maxLines: null,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                final updatedText = _textController.text.toString();
+                if (updatedText.isNotEmpty) {
+                  databaseRef.child(postKey).update({'text': updatedText})
+                    .then((_) {
+                      Navigator.of(context).pop();
+                    }).onError((error, stackTrace) {
+                      Utils.flushBarErrorMessage(error.toString(), context);
+                    },);
+                }else{
+                  Utils.flushBarErrorMessage('Post can not be empty', context);
+                }
+              },
+              child: const Text('Update'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height * 1;
@@ -93,11 +135,21 @@ class _PostScreenState extends State<PostScreen> {
                           snapshot.child('text').value.toString(),
                         ),
                         subtitle: Text(snapshot.child('id').value.toString()),
-                        trailing: IconButton(
-                            onPressed: () {
-                              deletePost(postKey!);
-                            },
-                            icon: const Icon(Icons.delete)),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  editPost(postKey!, text);
+                                },
+                                icon: const Icon(Icons.edit)),
+                            IconButton(
+                                onPressed: () {
+                                  deletePost(postKey!);
+                                },
+                                icon: const Icon(Icons.delete)),
+                          ],
+                        ),
                       );
                     } else if (text
                         .toLowerCase()
