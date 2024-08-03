@@ -3,11 +3,12 @@ import 'package:firebase_1/Component/round_textfield.dart';
 import 'package:firebase_1/Res/colors.dart';
 import 'package:firebase_1/Routes/route_name.dart';
 import 'package:firebase_1/Utils/utils.dart';
+import 'package:firebase_1/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class OTPVerificationScreen extends StatefulWidget {
-  final verificationId;
+  final String verificationId;
   const OTPVerificationScreen({super.key, required this.verificationId});
 
   @override
@@ -23,20 +24,43 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+     backgroundColor: AppColors.greenColor,
       appBar: AppBar(
-        title: const Text('Verify'),
         automaticallyImplyLeading: true,
         centerTitle: true,
-        backgroundColor: AppColors.blackColor,
+        backgroundColor: AppColors.lightGreenColor,
         foregroundColor: AppColors.whiteColor,
       ),
       body: Center(
         child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(50),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
+                children: [ Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Verification',
+                        style: TextStyle(
+                          fontSize: mq.height * 0.06,
+                          fontWeight: FontWeight.w900,
+                          color: AppColors.whiteColor,
+                        ),
+                      ),
+                      Text(
+                        'Code',
+                        style: TextStyle(
+                          fontSize: mq.height * 0.06,
+                          fontWeight: FontWeight.w900,
+                          color: AppColors.whiteColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                   RoundTextField(
                     label: 'Enter the code sent to your phone',
                     hint: '123456',
@@ -49,32 +73,31 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                           context, textFieldFocus, otpButtonFocus);
                     },
                   ),
-                  Padding(
-                      padding: const EdgeInsets.all(40.0),
-                      child: RoundButton(
-                          title: 'Verify',
-                          focusNode: otpButtonFocus,
-                          onPress: () async {
-                            setState(() {
-                              _loading = true;
-                            });
-                            final credential = PhoneAuthProvider.credential(
-                                verificationId: widget.verificationId,
-                                smsCode: otpController.text.toString());
-                            try {
-                              setState(() {
-                                _loading = false;
-                              });
-                              await _auth.signInWithCredential(credential);
-                              Navigator.pushNamed(
-                                  context, RouteNames.postScreen);
-                            } catch (e) {
-                              setState(() {
-                                _loading = false;
-                              });
-                              Utils.flushBarErrorMessage(e.toString(), context);
-                            }
-                          }))
+                    SizedBox(height: mq.height * 0.05),
+                  RoundButton(
+                      title: 'Verify',
+                      focusNode: otpButtonFocus,
+                      onPress: () async {
+                        setState(() {
+                          _loading = true;
+                        });
+                        final credential = PhoneAuthProvider.credential(
+                            verificationId: widget.verificationId,
+                            smsCode: otpController.text.toString());
+                        try {
+                          setState(() {
+                            _loading = false;
+                          });
+                          await _auth.signInWithCredential(credential);
+                          Navigator.pushNamed(
+                              context, RouteNames.postScreen);
+                        } catch (e) {
+                          setState(() {
+                            _loading = false;
+                          });
+                          Utils.flushBarErrorMessage(e.toString(), context);
+                        }
+                      })
                 ])),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:firebase_1/Routes/route_name.dart';
 import 'package:firebase_1/Utils/utils.dart';
 import 'package:firebase_1/component/round_button.dart';
 import 'package:firebase_1/component/round_textfield.dart';
+import 'package:firebase_1/main.dart';
 import 'package:firebase_1/res/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -56,28 +57,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      child: Scaffold(
+      child: Scaffold(backgroundColor: AppColors.greenColor,
         appBar: AppBar(
-          title: const Text('Sign Up'),
-          automaticallyImplyLeading: false,
+        
+          automaticallyImplyLeading: true,
           centerTitle: true,
-          backgroundColor: AppColors.blackColor,
+          backgroundColor: AppColors.lightGreenColor,
           foregroundColor: AppColors.whiteColor,
         ),
         body: Center(
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(50),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
+              children: [ Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Text(
+                      'SIGN UP',
+                      style: TextStyle(
+                          fontSize: mq.height * 0.07,
+                          fontWeight: FontWeight.w900,color: AppColors.whiteColor),
+                    ),
+                  ),
                 Form(
                   key: _formKey,
                   child: Column(
                     children: [
                       RoundTextField(
                         label: 'Email',
-                        hint: 'saadahmed@gmail.com',
+                        hint: 'Email',
                         inputType: TextInputType.emailAddress,
                         prefixIcon: Icons.email,
                         textEditingController: emailController,
@@ -90,7 +99,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       RoundTextField(
                         label: 'Password',
-                        hint: "*********",
+                        hint: 'Password',
                         inputType: TextInputType.visiblePassword,
                         prefixIcon: Icons.lock,
                         textEditingController: passwordController,
@@ -105,25 +114,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 70, bottom: 10),
+                  padding: const EdgeInsets.only(top: 70 ),
                   child: RoundButton(
                       loading: _loading,
-                      title: 'SignUp',
+                      title: 'Sign Up',
                       onPress: () async {
                         if (_formKey.currentState!.validate()) {
                           onSignUp();
                         }
                       }),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+               Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    const Text("Already have an account?"),
+                    const Text("Already have an account?",style: TextStyle(color: AppColors.whiteColor),),
                     TextButton(
                       onPressed: () {
                         Navigator.pushNamed(context, RouteNames.loginScreen);
                       },
-                      child: const Text('Login'),
+                        child: const Text('Login',style: TextStyle(color: Color(0xff53b26e)),),
                     )
                   ],
                 )
