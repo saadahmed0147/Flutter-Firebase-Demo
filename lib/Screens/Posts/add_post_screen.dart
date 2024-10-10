@@ -17,6 +17,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height * 1;
+    final width = MediaQuery.of(context).size.width * 1;
     FocusNode textFieldFocus = FocusNode();
     FocusNode buttonFocus = FocusNode();
 
@@ -25,7 +26,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
       appBar: AppBar(
         title: const Text('Add Post'),
         centerTitle: true,
-        backgroundColor: AppColors.blackColor,
+        backgroundColor: AppColors.greenColor,
         foregroundColor: AppColors.whiteColor,
       ),
       body: SingleChildScrollView(
@@ -45,18 +46,19 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 maxLines: 8,
                 decoration: InputDecoration(
                   hintText: "What's in your mind?",
+                  hintStyle: TextStyle(color: AppColors.greenColor),
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide:
-                          const BorderSide(color: AppColors.blackColor)),
+                          const BorderSide(color: AppColors.greenColor)),
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide:
-                          const BorderSide(color: AppColors.blackColor)),
+                          const BorderSide(color: AppColors.greenColor)),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide:
-                          const BorderSide(color: AppColors.blackColor)),
+                          const BorderSide(color: AppColors.greenColor)),
                 ),
               ),
               SizedBox(
@@ -65,38 +67,44 @@ class _AddPostScreenState extends State<AddPostScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  RoundButton(
-                      focusNode: buttonFocus,
-                      loading: loading,
-                      title: 'Add',
-                      onPress: () {
-                        setState(() {
-                          loading = true;
-                        });
-                        databaseRef
-                            .child(DateTime.now()
-                                .microsecondsSinceEpoch
-                                .toString())
-                            .set({
-                          'text': textFieldController.text.toString(),
-                          'id': DateTime.now().microsecondsSinceEpoch.toString()
-                        })
-                          ..then((value) {
-                            setState(() {
-                              loading = false;
-                            });
-                            textFieldController.clear();
-                            Utils.flushBarErrorMessage('Post Added', context);
-                          })
-                          ..onError((error, stackTrace) {
-                            setState(() {
-                              loading = false;
-                            });
-                        
-                            Utils.flushBarErrorMessage(
-                                error.toString(), context);
+                  SizedBox(
+                    height: height * 0.08,
+                    width: width * 0.8,
+                    child: RoundButton(
+                        backgroundColor: AppColors.greenColor,
+                        focusNode: buttonFocus,
+                        loading: loading,
+                        title: 'Add',
+                        onPress: () {
+                          setState(() {
+                            loading = true;
                           });
-                      }),
+                          databaseRef
+                              .child(DateTime.now()
+                                  .microsecondsSinceEpoch
+                                  .toString())
+                              .set({
+                            'text': textFieldController.text.toString(),
+                            'id':
+                                DateTime.now().microsecondsSinceEpoch.toString()
+                          })
+                            ..then((value) {
+                              setState(() {
+                                loading = false;
+                              });
+                              textFieldController.clear();
+                              Utils.flushBarErrorMessage('Post Added', context);
+                            })
+                            ..onError((error, stackTrace) {
+                              setState(() {
+                                loading = false;
+                              });
+
+                              Utils.flushBarErrorMessage(
+                                  error.toString(), context);
+                            });
+                        }),
+                  ),
                 ],
               )
             ],
