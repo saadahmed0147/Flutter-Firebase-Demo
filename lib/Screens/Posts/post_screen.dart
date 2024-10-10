@@ -20,7 +20,8 @@ class _PostScreenState extends State<PostScreen> {
 
   void deletePost(String postKey) {
     databaseRef.child(postKey).remove().then((value) {
-      Utils.flushBarErrorMessage('Post Deleted', context);
+      // Successfully deleted post
+      print('Post deleted successfully');
     }).onError((error, stackTrace) {
       Utils.flushBarErrorMessage(error.toString(), context);
     });
@@ -50,14 +51,17 @@ class _PostScreenState extends State<PostScreen> {
               onPressed: () {
                 final updatedText = _textController.text.toString();
                 if (updatedText.isNotEmpty) {
-                  databaseRef.child(postKey).update({'text': updatedText})
-                    .then((_) {
-                      Navigator.of(context).pop();
-                    }).onError((error, stackTrace) {
+                  databaseRef
+                      .child(postKey)
+                      .update({'text': updatedText}).then((_) {
+                    Navigator.of(context).pop();
+                  }).onError(
+                    (error, stackTrace) {
                       Utils.flushBarErrorMessage(error.toString(), context);
-                    },);
-                }else{
-                  Utils.flushBarErrorMessage('Post can not be empty', context);
+                    },
+                  );
+                } else {
+                  Utils.flushBarErrorMessage('Post cannot be empty', context);
                 }
               },
               child: const Text('Update'),
@@ -72,25 +76,26 @@ class _PostScreenState extends State<PostScreen> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height * 1;
 
-    return PopScope(
-      canPop: false,
+    return WillPopScope(
+      onWillPop: () async => false,
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: AppColors.blackColor,
+          backgroundColor: AppColors.greenColor,
           foregroundColor: AppColors.whiteColor,
           title: const Text('Posts'),
           centerTitle: true,
           actions: [
             IconButton(
-                onPressed: () {
-                  FirebaseAuth.instance.signOut().then((value) =>
-                      Navigator.pushNamed(context, RouteNames.loginScreen)
-                        ..onError((error, stackTrace) =>
-                            Utils.flushBarErrorMessage(
-                                error.toString(), context)));
-                },
-                icon: const Icon(Icons.exit_to_app))
+              onPressed: () {
+                FirebaseAuth.instance.signOut().then((value) =>
+                    Navigator.pushNamed(context, RouteNames.loginScreen)
+                      ..onError((error, stackTrace) =>
+                          Utils.flushBarErrorMessage(
+                              error.toString(), context)));
+              },
+              icon: const Icon(Icons.exit_to_app),
+            )
           ],
         ),
         body: Padding(
@@ -120,7 +125,10 @@ class _PostScreenState extends State<PostScreen> {
                 child: Text(
                   'Posts',
                   style: TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: height * 0.025),
+                    color: AppColors.greenColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: height * 0.025,
+                  ),
                 ),
               ),
               Expanded(
@@ -129,48 +137,90 @@ class _PostScreenState extends State<PostScreen> {
                   itemBuilder: (context, snapshot, animation, index) {
                     final text = snapshot.child('text').value.toString();
                     final postKey = snapshot.key;
-                    if (searchController.text.isEmpty) {
-                      return ListTile(
-                        title: Text(
-                          snapshot.child('text').value.toString(),
+
+                    // Check if search is empty or if the text matches the search query
+                    if (searchController.text.isEmpty ||
+                        text
+                            .toLowerCase()
+                            .contains(searchController.text.toLowerCase())) {
+                      return Dismissible(
+                        key: Key(postKey!), // Unique key for each item
+                        background: Container(
+                          color: Colors.red, // Background color when swiped
+                          alignment: AlignmentDirectional.centerEnd,
+                          padding: const EdgeInsets.only(right: 20),
+                          child: const Icon(Icons.delete, color: Colors.white),
                         ),
-                        subtitle: Text(snapshot.child('id').value.toString()),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                                onPressed: () {
-                                  editPost(postKey!, text);
-                                },
-                                icon: const Icon(Icons.edit)),
-                            IconButton(
-                                onPressed: () {
-                                  deletePost(postKey!);
-                                },
-                                icon: const Icon(Icons.delete)),
-                          ],
+                        direction: DismissDirection.endToStart,
+                        onDismissed: (direction) {
+                          // Call deletePost and then remove the item from the list
+                          deletePost(postKey);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Post deleted')),
+                          );
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(vertical: 5),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: AppColors.greenColor),
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: ListTile(
+                            title: Text(
+                              text,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                            subtitle: Text(
+                              snapshot.child('id').value.toString(),
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    editPost(postKey!, text);
+                                  },
+                                  icon: const Icon(
+                                    Icons.edit,
+                                    color: AppColors.greenColor,
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    deletePost(postKey!);
+                                  },
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      );
-                    } else if (text
-                        .toLowerCase()
-                        .contains(searchController.text.toLowerCase())) {
-                      return ListTile(
-                        title: Text(
-                          snapshot.child('text').value.toString(),
-                        ),
-                        subtitle: Text(snapshot.child('id').value.toString()),
-                        trailing: IconButton(
-                            onPressed: () {
-                              deletePost(postKey!);
-                            },
-                            icon: const Icon(Icons.delete)),
                       );
                     } else {
-                      return Container();
+                      return const SizedBox
+                          .shrink(); // Return an empty widget when not matched
                     }
                   },
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -178,7 +228,7 @@ class _PostScreenState extends State<PostScreen> {
           onPressed: () {
             Navigator.pushNamed(context, RouteNames.addPostScreen);
           },
-          backgroundColor: AppColors.blackColor,
+          backgroundColor: AppColors.greenColor,
           foregroundColor: AppColors.whiteColor,
           child: const Icon(Icons.add),
         ),
