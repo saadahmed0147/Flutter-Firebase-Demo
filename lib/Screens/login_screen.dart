@@ -59,7 +59,8 @@ class _LoginScreenState extends State<LoginScreen> {
     mq = MediaQuery.of(context).size;
     return PopScope(
       canPop: false,
-      child: Scaffold(backgroundColor: AppColors.greenColor,
+      child: Scaffold(
+        backgroundColor: AppColors.greenColor,
         appBar: AppBar(
           // title: const Text('Login'),
           automaticallyImplyLeading: true,
@@ -81,7 +82,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       'LOGIN',
                       style: TextStyle(
                           fontSize: mq.height * 0.07,
-                          fontWeight: FontWeight.w900,color: AppColors.whiteColor),
+                          fontWeight: FontWeight.w900,
+                          color: AppColors.whiteColor),
                     ),
                   ),
                   Form(
@@ -104,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         RoundTextField(
                           label: 'Password',
                           hint: 'Password',
-                          inputType: TextInputType.number,
+                          inputType: TextInputType.name,
                           // prefixIcon: Icons.lock,
                           textEditingController: passwordController,
                           isPasswordField: true,
@@ -131,12 +133,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      const Text("Don't have an account?",style: TextStyle(color: AppColors.whiteColor),),
+                      const Text(
+                        "Don't have an account?",
+                        style: TextStyle(color: AppColors.whiteColor),
+                      ),
                       TextButton(
                         onPressed: () {
                           Navigator.pushNamed(context, RouteNames.signUpScreen);
                         },
-                        child: const Text('SignUp',style: TextStyle(color: Color(0xff53b26e)),),
+                        child: const Text(
+                          'SignUp',
+                          style: TextStyle(color: Color(0xff53b26e)),
+                        ),
                       )
                     ],
                   ),
