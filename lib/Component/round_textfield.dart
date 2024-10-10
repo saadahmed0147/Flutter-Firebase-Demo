@@ -57,7 +57,7 @@ class _RoundTextFieldState extends State<RoundTextField> {
               decoration: InputDecoration(
                 border: InputBorder.none,
                 filled: true,
-                fillColor: AppColors.lightGreenColor,
+                fillColor: AppColors.whiteColor,
                 floatingLabelBehavior: FloatingLabelBehavior.always,
                 hintText: widget.hint,
                 hintStyle: const TextStyle(color: Color(0xff8eaa8e)),
@@ -74,14 +74,15 @@ class _RoundTextFieldState extends State<RoundTextField> {
                         ),
                       )
                     : null,
-                   errorBorder:  const OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.all(Radius.circular(8))), 
+
+                errorBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.greenColor),
+                    borderRadius: BorderRadius.all(Radius.circular(8))),
                 focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide.none,
+                    borderSide: BorderSide(color: AppColors.greenColor),
                     borderRadius: BorderRadius.all(Radius.circular(8))),
                 enabledBorder: const OutlineInputBorder(
-                  borderSide: BorderSide.none,
+                  borderSide: BorderSide(color: AppColors.greenColor),
                   borderRadius: BorderRadius.all(
                     Radius.circular(8),
                   ),
