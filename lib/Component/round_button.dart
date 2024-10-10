@@ -1,4 +1,3 @@
-import 'package:firebase_1/main.dart';
 import 'package:firebase_1/res/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +13,7 @@ class RoundButton extends StatefulWidget {
       required this.title,
       required this.onPress,
       this.loading = false,
-      this.backgroundColor = AppColors.btnColor,
+      this.backgroundColor = AppColors.lightGreenColor,
       this.foregroundColor = AppColors.whiteColor,
       this.focusNode});
 
@@ -25,11 +24,13 @@ class RoundButton extends StatefulWidget {
 class _RoundButtonState extends State<RoundButton> {
   @override
   Widget build(BuildContext context) {
+    Size mq = MediaQuery.of(context).size;
     return widget.loading
         ? const CircularProgressIndicator(
             color: AppColors.whiteColor,
           )
         : SizedBox(
+            height: mq.height * 0.05,
             width: double.infinity,
             child: ElevatedButton(
               focusNode: widget.focusNode,
@@ -44,7 +45,11 @@ class _RoundButtonState extends State<RoundButton> {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(13.0),
-                child: Text(widget.title,style: TextStyle(fontSize: mq.height*0.025,fontWeight: FontWeight.bold),),
+                child: Text(
+                  widget.title,
+                  style: TextStyle(
+                      fontSize: mq.height * 0.025, fontWeight: FontWeight.bold),
+                ),
               ),
             ),
           );
